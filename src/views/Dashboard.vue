@@ -27,8 +27,7 @@
                 <v-col cols="9" class="mx-auto">
                     <v-card outlined>
                         <v-card-text class="blue-grey--text text--darken-3 subtitle-1">
-                            <div>
-                                {{ nowcontent }}
+                            <div v-html="nowcontent">
                             </div>
                         </v-card-text>
                         <v-card-actions>
@@ -52,10 +51,10 @@
             <v-row>
                 <v-col cols="9" class="mx-auto">
                     <v-form>
-                        <v-textarea filled name="nowcontent" label="Enter your Now Content" value="Testing 123"></v-textarea>
+                        <v-textarea filled name="nowcontent" rows="30"  rounded label="Enter your Now Content" :value="nowmarkdown" v-model="nowmarkdown"></v-textarea>
 
                         <v-row no-gutters class="d-flex align-end flex-column">
-                            <v-btn text color="light-blue darken-2">Save</v-btn>
+                            <v-btn text color="light-blue darken-2" @click="updateUserContent">Save</v-btn>
                         </v-row>
 
 
@@ -68,18 +67,43 @@
 </template>
 
 <script>
+    var md = require('markdown-it')({
+        breaks: true
+    }).enable('newline');
+
     export default {
         name: "Dashboard",
         data: () => {
             return{
                 inEditMode: false,
-                nowcontent: ''
+                nowcontent: '',
+                nowmarkdown: ''
             }
         },
         methods: {
             toggleEditMode: function(){
                 this.inEditMode = !this.inEditMode;
-            }
+            },
+            updateUserContent: function(){
+                var self = this;
+
+                // We run the parser
+                let renderedResult = md.render(this.nowmarkdown);
+                // Save both the markdown raw content and the rendered content
+                let saveObj = {};
+                saveObj["author"] = "alvinloh";
+                saveObj["content"] = renderedResult;
+                saveObj['rawmarkdown'] = this.nowmarkdown;
+
+                const baseURI = "http://localhost:3000/posts/1";
+                this.$http.put(baseURI ,saveObj)
+                    .then(function(response){
+                        self.nowcontent = renderedResult
+                        self.inEditMode = false;
+                    }).catch(function(err){
+                      console.log("Error : " + err);
+                });
+            },
         },
         mounted: function () {
             var self = this;
@@ -89,6 +113,7 @@
             this.$http.get(baseURI + '?author=alvinloh')
                 .then(function(response){
                     self.nowcontent = response.data[0].content;
+                    self.nowmarkdown = response.data[0].rawmarkdown;
                 }).catch(function (err){
                     console.log("Error : " + err);
                 });
