@@ -5,7 +5,7 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn outlined color="white" class="ml-4">
+            <v-btn outlined color="white" class="ml-4" @click="login">
                 Login | Sign Up
             </v-btn>
 
@@ -16,7 +16,12 @@
 
 <script>
     export default {
-        name: "Home"
+        name: "Home",
+        methods: {
+            login: function(){
+                this.$auth.loginWithRedirect();
+            }
+        },
     }
 </script>
 
