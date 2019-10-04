@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Dashboard from './views/Dashboard'
 import Viewusernow from './views/Viewusernow'
+import CreateNewPage from "./views/CreateNewPage";
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
             path: '/dashboard',
             name: 'dashboard',
             component: Dashboard
+        },
+        {
+            path: '/create',
+            name: 'createpage',
+            component:CreateNewPage
         },
         {
             path:'/now',
