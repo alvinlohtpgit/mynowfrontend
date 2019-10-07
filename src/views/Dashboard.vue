@@ -8,9 +8,9 @@
             <v-avatar>
                 <img src="https://www.gravatar.com/avatar/b42b3e2cee3310e3e3b61a5675057488?s=80" alt="avatar" />
             </v-avatar>
-            <span class="ml-3 white--text">Alvin Loh</span>
+            <span class="ml-3 white--text">{{ $auth.user.name }}</span>
 
-            <v-btn outlined color="white" class="ml-4">
+            <v-btn outlined color="white" class="ml-4" @click="logout">
                 <v-icon left>mdi-exit-to-app</v-icon>Logout
             </v-btn>
 
@@ -81,6 +81,10 @@
             }
         },
         methods: {
+            logout:function() {
+                this.$auth.logout();
+                this.$router.push('home');
+            },
             toggleEditMode: function(){
                 this.inEditMode = !this.inEditMode;
             },
