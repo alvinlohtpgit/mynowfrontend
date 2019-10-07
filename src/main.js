@@ -14,11 +14,13 @@ Vue.use(Auth0Plugin, {
   domain,
   clientId,
   onRedirectCallback: appState => {
+    /*
     router.push(
         appState && appState.targetUrl
             ? appState.targetUrl
             : window.location.pathname
-    );
+    );*/
+    console.log('On Redirect Callback in main');
   }
 });
 

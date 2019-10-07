@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Dashboard from './views/Dashboard'
 import Viewusernow from './views/Viewusernow'
 import CreateNewPage from "./views/CreateNewPage";
+import Authcallback from "./views/Authcallback";
 
 Vue.use(Router)
 
@@ -33,6 +34,11 @@ export default new Router({
             path: '/create',
             name: 'createpage',
             component:CreateNewPage
+        },
+        {
+            path:'/authcallback',
+            name:'authcallback',
+            component: Authcallback
         },
         {
             path:'/now',
