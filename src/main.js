@@ -5,6 +5,8 @@ import router from './router';
 import axios from 'axios';
 import { Auth0Plugin } from "./auth";
 import { domain, clientId } from "../auth_config.json";
+import VueFirestore from 'vue-firestore';
+import Firebase from 'firebase';
 
 
 Vue.config.productionTip = false
