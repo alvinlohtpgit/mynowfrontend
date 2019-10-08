@@ -10,7 +10,7 @@ export const getInstance = () => instance;
 
 export const useAuth0 = ({
                              onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
-                             redirectUri = "http://localhost:8080/authcallback",
+                             redirectUri = 'http://localhost:8080/authcallback',
                              ...options
                          }) => {
     if (instance) return instance;

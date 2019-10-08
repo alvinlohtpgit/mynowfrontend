@@ -22,6 +22,10 @@
                 this.$auth.loginWithRedirect();
             }
         },
+        mounted: function(){
+            console.log("Inside main");
+            console.log("User Auth : " + this.$auth.isAuthenticated);
+        }
     }
 </script>
 

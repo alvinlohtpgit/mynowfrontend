@@ -17,7 +17,14 @@
         mounted : function(){
             var self = this;
 
-            console.log("Name : " + this.$auth.name);
+                // Code that will run only after the
+                // entire view has been rendered
+               // console.log(this.$auth);
+               // console.log(this.$auth.isAuthenticated);
+                //console.log("Name : " + this.$auth.user.name);
+
+            this.$router.push('/');
+
 /*
             if (this.$auth.isAuthenticated){
                 let pageCount = 0;
