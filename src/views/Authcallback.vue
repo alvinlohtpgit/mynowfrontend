@@ -5,36 +5,43 @@
 </template>
 
 <script>
+    import {db} from '../firebase';
+
     export default {
         name: "Authcallback",
+        data() {
+            return {
+                pages: []
+            }
+        },
         mounted : function(){
             var self = this;
 
+            console.log("Name : " + this.$auth.name);
+/*
             if (this.$auth.isAuthenticated){
-                console.log("User authenticated");
-                // Check if the user has already a post
-                const baseURI = "http://localhost:3000/posts?author=" + this.$auth.user.name;
+                let pageCount = 0;
+                let pageCountQuery = db.collection('pages').where('author' , '==', 'alvinloh@tuaspower.com.sg').get()
+                    .then( function( querySnapshot) {
+                        querySnapshot.forEach(function(doc){
+                            pageCount++;
+                        });
 
-                this.$http.get(baseURI)
-                    .then(function(response){
-                        if (response.data.length > 0){
-                            //  Author already exist, means he has a page
-                            // Redirect to his dashboard
+                        // Check if the user has already a post
+                        if (pageCount > 0){
                             self.$router.push('dashboard');
                         }
                         else{
-                            // Name does not exist
+                            // Name does not exist, so we redirect him to create a page
                             self.$router.push('create');
-
                         }
-                    }).catch(function (err){
-                    console.log("Error : " + err);
-                });
+                    });
             }
             else{
                 console.log("User not authenticated");
-                this.$router.push('home');
+                this.$router.push('/');
             }
+*/
         }
     }
 </script>

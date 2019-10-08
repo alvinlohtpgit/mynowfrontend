@@ -12,6 +12,8 @@ import Firebase from 'firebase';
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 
+Vue.use(VueFirestore);
+
 Vue.use(Auth0Plugin, {
   domain,
   clientId,
@@ -23,10 +25,9 @@ Vue.use(Auth0Plugin, {
             : window.location.pathname
     );*/
     console.log('On Redirect Callback in main');
+    console.log("in main : user is " + this.$user.name);
   }
 });
-
-
 new Vue({
   vuetify,
   router,

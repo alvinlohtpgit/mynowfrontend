@@ -44,6 +44,7 @@ export const useAuth0 = ({
             async handleRedirectCallback() {
                 this.loading = true;
                 try {
+                    console.log("Inside here");
                     await this.auth0Client.handleRedirectCallback();
                     this.user = await this.auth0Client.getUser();
                     this.isAuthenticated = true;
