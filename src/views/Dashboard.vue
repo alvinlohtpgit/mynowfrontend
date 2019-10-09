@@ -19,11 +19,18 @@
         <v-container v-if="inEditMode === false">
              <v-row>
                 <v-col cols="12" class="headline blue-grey--text text--darken-2">
-                    Your Now Page is looking like ....
+                    <div v-if="nowcontent===''" class="text-center mt-8">
+                        Your Now page is empty.
+                        <br />
+                        <v-btn text color="light-blue darken-2" @click="toggleEditMode">EDIT MY NOW PAGE</v-btn>
+                    </div>
+                    <span v-else>
+                        Your Now Page is looking like ....
+                    </span>
                 </v-col>
             </v-row>
 
-            <v-row>
+            <v-row  v-if="nowcontent!=''">
                 <v-col cols="9" class="mx-auto">
                     <v-card outlined>
                         <v-card-text class="blue-grey--text text--darken-3 subtitle-1">
@@ -54,7 +61,12 @@
                         <v-textarea filled name="nowcontent" rows="30"  rounded label="Enter your Now Content" :value="nowmarkdown" v-model="nowmarkdown"></v-textarea>
 
                         <v-row no-gutters class="d-flex align-end flex-column">
-                            <v-btn text color="light-blue darken-2" @click="updateUserContent">Save</v-btn>
+                            <v-progress-circular v-if="isSaving===true"
+                                                 indeterminate
+                                                 color="success"
+                                                 size="25"
+                            ></v-progress-circular>
+                            <v-btn text color="light-blue darken-2" @click="updateUserContent" :disabled="isSaving===true">Save</v-btn>
                         </v-row>
 
 
@@ -67,6 +79,9 @@
 </template>
 
 <script>
+    import {db} from '../firebase';
+    import { firebase } from "@firebase/app";
+
     var md = require('markdown-it')({
         breaks: true
     }).enable('newline');
@@ -77,7 +92,9 @@
             return{
                 inEditMode: false,
                 nowcontent: '',
-                nowmarkdown: ''
+                nowmarkdown: '',
+                loadeddocid: '',
+                isSaving: false
             }
         },
         methods: {
@@ -90,37 +107,34 @@
             },
             updateUserContent: function(){
                 var self = this;
-
+                this.isSaving===true
                 // We run the parser
                 let renderedResult = md.render(this.nowmarkdown);
                 // Save both the markdown raw content and the rendered content
-                let saveObj = {};
-                saveObj["author"] = "alvinloh";
-                saveObj["content"] = renderedResult;
-                saveObj['rawmarkdown'] = this.nowmarkdown;
-
-                const baseURI = "http://localhost:3000/posts/1";
-                this.$http.put(baseURI ,saveObj)
-                    .then(function(response){
-                        self.nowcontent = renderedResult
-                        self.inEditMode = false;
-                    }).catch(function(err){
-                      console.log("Error : " + err);
+                db.collection('pages').doc(this.loadeddocid).update({
+                    content: renderedResult,
+                    rawmarkdown: this.nowmarkdown,
+                    lastupdated: firebase.firestore.Timestamp.fromDate(new Date())
+                }).then(function(response){
+                    self.nowcontent = renderedResult;
+                    self.inEditMode = false;
+                    self.isSaving = false;
                 });
             },
         },
         mounted: function () {
             var self = this;
             // Run this when the thing loads up
-
-            const baseURI = "http://localhost:3000/posts";
-            this.$http.get(baseURI + '?author=alvinloh')
-                .then(function(response){
-                    self.nowcontent = response.data[0].content;
-                    self.nowmarkdown = response.data[0].rawmarkdown;
-                }).catch(function (err){
-                    console.log("Error : " + err);
+            let loadPageContentQuery = db.collection('pages').where('author','==',this.$auth.user.name).get()
+                .then(function(querySnapshot){
+                    // We only have 1 result
+                    querySnapshot.forEach(function(doc){
+                        self.nowcontent = doc.data().content;
+                        self.nowmarkdown = doc.data().rawmarkdown;
+                        self.loadeddocid = doc.id;
+                    });
                 });
+
         }
     }
 </script>
