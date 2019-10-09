@@ -1,12 +1,6 @@
 <template>
     <div>
-        <v-app-bar color="indigo lighten-2">
-            <v-toolbar-title class="white--text headline"><span class="font-weight-medium">MyNow</span><span class="font-weight-thin">.page</span></v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn elevation="5">
-                Get your own NOW page
-            </v-btn>
-        </v-app-bar>
+        <Navbar/>
 
         <v-container class="mt-10">
             <v-row>
@@ -28,6 +22,9 @@
                     <div class="d-flex justify-center mt-7">
                         <span class="display-1 deep-orange--text text--darken-4">{{authorname}}</span>
                     </div>
+                    <div class="d-flex justify-center mt-5">
+                            <span class="body-2 font-italic">Last Updated : {{lastmodifiedtag}}</span>
+                    </div>
 
                 </v-col>
             </v-row>
@@ -37,16 +34,23 @@
 
 <script>
     import {db} from '../firebase';
+    import { firebase } from "@firebase/app";
     const gravatarUrl = require('gravatar-url');
+    const moment = require('moment');
+    import Navbar from '../components/Navbar';
 
     export default {
         name: "Viewusernow",
+        components:{
+            Navbar
+        },
         data: () => {
             return{
                 subdomainhost: '',
                 nowcontent:'',
                 authorname: 'Alvin Loh',
-                gravatarimage: ''
+                gravatarimage: '',
+                lastmodifiedtag: ''
             }
         },
         mounted: function(){
@@ -64,6 +68,10 @@
                      self.nowcontent = doc.data().content;
                      self.authorname = doc.data().pageprefix;
                      self.gravatarimage = gravatarUrl(doc.data().author , {size:250});
+
+                     let lastModifiedTimeStamp = doc.data().lastupdated.toDate();
+                     self.lastmodifiedtag = moment(lastModifiedTimeStamp).fromNow();
+
                    });
                 });
 

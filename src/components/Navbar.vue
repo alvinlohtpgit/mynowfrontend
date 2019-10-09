@@ -4,7 +4,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn elevation="5" v-if="navbarstatus==='nowpage'">
+        <v-btn elevation="5" v-if="navbarstatus==='nowpage'" @click="login">
             Get your own NOW page
         </v-btn>
 
