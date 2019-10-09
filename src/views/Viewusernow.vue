@@ -53,13 +53,13 @@
             self.subdomainhost = subdomain;
 
             // Load the nowcontent
-            const baseURI = "http://localhost:3000/posts?author=" + subdomain;
-            this.$http.get(baseURI)
-                .then(function(response){
-                    self.nowcontent = response.data[0].content;
-                }).catch(function(err){
-                 console.log('Error ' + err);
-            });
+            let pageQuery = db.collection('pages').where('pageprefix', '==' , subdomain).get()
+                .then(function(querySnapshot){
+                   querySnapshot.forEach(function(doc){
+                     self.nowcontent = doc.data().content;
+                   });
+                });
+
         }
     }
 </script>
