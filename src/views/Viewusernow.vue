@@ -19,13 +19,14 @@
                 </v-col>
                 <v-col cols="4">
                     <div class="d-flex justify-center">
+
                         <v-avatar size="250">
-                            <img src="https://www.gravatar.com/avatar/b42b3e2cee3310e3e3b61a5675057488?s=250" alt="avatar" />
+                            <img :src="gravatarimage" alt="Avatar" />
                         </v-avatar>
                     </div>
 
                     <div class="d-flex justify-center mt-7">
-                        <span class="display-1 deep-orange--text text--darken-4">Alvin Loh</span>
+                        <span class="display-1 deep-orange--text text--darken-4">{{authorname}}</span>
                     </div>
 
                 </v-col>
@@ -35,13 +36,17 @@
 </template>
 
 <script>
+    import {db} from '../firebase';
+    const gravatarUrl = require('gravatar-url');
+
     export default {
         name: "Viewusernow",
         data: () => {
             return{
                 subdomainhost: '',
                 nowcontent:'',
-                authorname: 'Alvin Loh'
+                authorname: 'Alvin Loh',
+                gravatarimage: ''
             }
         },
         mounted: function(){
@@ -57,6 +62,8 @@
                 .then(function(querySnapshot){
                    querySnapshot.forEach(function(doc){
                      self.nowcontent = doc.data().content;
+                     self.authorname = doc.data().pageprefix;
+                     self.gravatarimage = gravatarUrl(doc.data().author , {size:250});
                    });
                 });
 

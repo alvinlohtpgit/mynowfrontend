@@ -1,30 +1,26 @@
 <template>
     <div>
-        <v-app-bar color="indigo lighten-2">
-            <v-toolbar-title class="white--text headline"><span class="font-weight-medium">MyNow</span><span class="font-weight-thin">.page</span></v-toolbar-title>
-
-            <v-spacer></v-spacer>
-
-            <v-btn outlined color="white" class="ml-4" @click="login">
-                Login | Sign Up
-            </v-btn>
-
-        </v-app-bar>
-
+        <Navbar/>
     </div>
 </template>
 
 <script>
+    import Navbar from '../components/Navbar';
+
     export default {
         name: "Home",
+        components:{
+            Navbar
+        },
         methods: {
-            login: function(){
-                this.$auth.loginWithRedirect();
-            }
         },
         mounted: function(){
-            console.log("Inside main");
-            console.log("User Auth : " + this.$auth.isAuthenticated);
+            let currenthostname = window.location.hostname;
+            let subdomain = currenthostname.substr(0 , currenthostname.indexOf('.'));
+
+            if ((subdomain != 'mynow') && (window.location.hostname != 'localhost')){
+                window.location.href = 'http://localhost:8080';
+            }
         }
     }
 </script>
