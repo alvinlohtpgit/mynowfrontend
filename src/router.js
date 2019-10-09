@@ -5,6 +5,7 @@ import Dashboard from './views/Dashboard'
 import Viewusernow from './views/Viewusernow'
 import CreateNewPage from "./views/CreateNewPage";
 import Authcallback from "./views/Authcallback";
+import { authGuard } from "./auth";
 
 Vue.use(Router)
 
@@ -38,7 +39,8 @@ export default new Router({
         {
             path:'/authcallback',
             name:'authcallback',
-            component: Authcallback
+            component: Authcallback,
+            beforeEnter: authGuard
         },
         {
             path:'/now',

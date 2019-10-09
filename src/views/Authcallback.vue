@@ -19,11 +19,12 @@
 
                 // Code that will run only after the
                 // entire view has been rendered
-               // console.log(this.$auth);
-               // console.log(this.$auth.isAuthenticated);
+            console.log("Inside mounted");
+            console.log(this.$auth);
+             console.log(this.$auth.isAuthenticated);
                 //console.log("Name : " + this.$auth.user.name);
 
-            this.$router.push('/');
+            //this.$router.push('/');
 
 /*
             if (this.$auth.isAuthenticated){
