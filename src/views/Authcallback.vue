@@ -19,7 +19,7 @@
 
             if (this.$auth.isAuthenticated){
                 let pageCount = 0;
-                let pageCountQuery = db.collection('pages').where('author' , '==', 'alvinloh@tuaspower.com.sg').get()
+                let pageCountQuery = db.collection('pages').where('author' , '==', this.$auth.user.name).get()
                     .then( function( querySnapshot) {
                         querySnapshot.forEach(function(doc){
                             pageCount++;
