@@ -28,6 +28,7 @@
                             <v-btn text color="light-blue darken-2" @click="toggleEditMode">EDIT MY NOW PAGE</v-btn>
                         </v-card-actions>
                     </v-card>
+                    <span class="body-2">Your Now page is at https://{{pageprefix}}.mynow.page/now</span>
                 </v-col>
             </v-row>
 
@@ -84,7 +85,8 @@
                 nowcontent: '',
                 nowmarkdown: '',
                 loadeddocid: '',
-                isSaving: false
+                isSaving: false,
+                pageprefix:''
             }
         },
         methods: {
@@ -121,6 +123,7 @@
                     querySnapshot.forEach(function(doc){
                         self.nowcontent = doc.data().content;
                         self.nowmarkdown = doc.data().rawmarkdown;
+                        self.pageprefix = doc.data().pageprefix;
                         self.loadeddocid = doc.id;
                     });
                 });
