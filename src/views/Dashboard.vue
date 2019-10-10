@@ -44,7 +44,7 @@
             <v-row>
                 <v-col cols="9" class="mx-auto">
                     <v-form>
-                        <v-textarea filled name="nowcontent" rows="30"  rounded label="Enter your Now Content" :value="nowmarkdown" v-model="nowmarkdown"></v-textarea>
+                        <v-textarea filled name="nowcontent" rows="30"  rounded label="Enter your Now Content with Markdown" :value="nowmarkdown" v-model="nowmarkdown"></v-textarea>
 
                         <v-row no-gutters class="d-flex align-end flex-column">
                             <v-progress-circular v-if="isSaving===true"
