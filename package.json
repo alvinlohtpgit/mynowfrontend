@@ -18,7 +18,7 @@
     "gravatar-url": "^3.0.1",
     "lodash": "^4.17.15",
     "markdown-it": "^10.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "vue": "^2.6.10",
     "vue-firestore": "^0.3.22",
     "vue-router": "^3.0.3",
